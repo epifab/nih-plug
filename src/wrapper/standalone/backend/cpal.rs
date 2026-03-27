@@ -825,10 +825,11 @@ impl CpalMidir {
                 }
             }
 
+            let actual_sample_count = data.len() / num_output_channels;
+
             {
                 // Even though we told CPAL that we wanted `buffer_size` samples, it may still give
                 // us fewer. If we receive more than what we configured, then this will panic.
-                let actual_sample_count = data.len() / num_output_channels;
                 assert!(
                     actual_sample_count <= buffer_size,
                     "Received {actual_sample_count} samples, while the configured buffer size is \
@@ -921,7 +922,7 @@ impl CpalMidir {
                 }
             }
 
-            num_processed_samples += buffer_size;
+            num_processed_samples += actual_sample_count;
         }
     }
 }
